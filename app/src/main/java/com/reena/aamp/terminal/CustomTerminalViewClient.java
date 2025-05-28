@@ -1,4 +1,4 @@
-package com.reena.aamp.activity;
+package com.reena.aamp.terminal;
 
 import android.view.KeyEvent;
 import android.view.MotionEvent;

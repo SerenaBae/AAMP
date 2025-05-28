@@ -103,7 +103,7 @@ public class TerminalActivity extends Activity {
         }
         return workDir.getAbsolutePath();
     }
-    private static class CustomTerminalViewClient implements com.reena.aamp.activity.CustomTerminalViewClient {
+    private static class CustomTerminalViewClient implements com.reena.aamp.terminal.CustomTerminalViewClient {
         @Override
         public float onScale(float scale) {
             return Math.max(0.9f, Math.min(1.6f, scale));
