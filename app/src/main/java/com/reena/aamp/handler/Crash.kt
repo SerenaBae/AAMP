@@ -37,7 +37,11 @@ class Crash private constructor(private val context: Context) : Thread.UncaughtE
     }
 
     override fun uncaughtException(t: Thread, e: Throwable) {
-        TODO("Not yet implemented")
+        try {
+
+        } catch (_: Exception) {
+
+        }
     }
 
     private fun generateCrashLog(throwable: Throwable): String {
