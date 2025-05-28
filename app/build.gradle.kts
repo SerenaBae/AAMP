@@ -36,7 +36,8 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.termux.emulator)
+    implementation(libs.termux.view)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

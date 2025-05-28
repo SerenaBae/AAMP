@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AAMP</string>
+    <string name="an_error_occoured_when_app_is_running">An error occoured when app is running</string>
+    <string name="copy_log">Copy log</string>
+    <string name="share_log">Share log</string>
+    <string name="restart">Restart</string>
 </resources>
