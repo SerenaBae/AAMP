@@ -4,4 +4,9 @@
     <string name="copy_log">Copy log</string>
     <string name="share_log">Share log</string>
     <string name="restart">Restart</string>
+    <string name="open_settings">Open Settings</string>
+    <string name="toggle_soft_keyboard">Toggle soft keyboard</string>
+    <string name="new_session">New session</string>
+    <string name="action_send">Send</string>
+    <string name="enter_command">Enter command...</string>
 </resources>
