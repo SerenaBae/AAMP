@@ -1,21 +1,28 @@
 package com.reena.aamp.handler
 
+import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import android.content.Intent
 import android.os.Build
+import android.os.Looper
 import android.util.Log
+import com.reena.aamp.activity.CrashActivity
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.jvm.Volatile
+import kotlin.system.exitProcess
+import androidx.core.content.edit
 
 class Crash private constructor(private val context: Context) : Thread.UncaughtExceptionHandler {
 
     private val defaultHandler = Thread.getDefaultUncaughtExceptionHandler()
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: Crash? = null
 
@@ -38,9 +45,35 @@ class Crash private constructor(private val context: Context) : Thread.UncaughtE
 
     override fun uncaughtException(t: Thread, e: Throwable) {
         try {
+            val crashLog = generateCrashLog(e)
+            val crashFile = saveCrashToFile(crashLog)
 
+            context.getSharedPreferences("crash_prefs", Context.MODE_PRIVATE).edit {
+                putString("last_crash_file", crashFile.absolutePath)
+            }
+
+            object : Thread() {
+                override fun run() {
+                    Looper.prepare()
+                    val intent = Intent(context, CrashActivity::class.java).apply {
+                        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                                Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                        putExtra(CrashActivity.EXTRA_CRASH_INFO, crashLog)
+                    }
+                    try {
+                        context.startActivity(intent)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                    Looper.loop()
+                }
+            }.start()
+            Thread.sleep(1000)
+            android.os.Process.killProcess(android.os.Process.myPid())
+            exitProcess(1)
         } catch (_: Exception) {
-
+            defaultHandler?.uncaughtException(t, e)
         }
     }
 

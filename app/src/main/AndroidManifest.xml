@@ -24,15 +24,18 @@
         android:theme="@style/Theme.AAMP"
         tools:targetApi="31">
         <activity
-            android:name=".activity.CrashActivity"
+            android:name=".activity.MainActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity
+            android:name=".activity.CrashActivity"
+            android:exported="false"
+            android:process=":error_activity"
+            android:launchMode="singleTask"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
