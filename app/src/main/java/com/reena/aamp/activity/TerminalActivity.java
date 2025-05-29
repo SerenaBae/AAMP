@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.Button;
-import android.widget.EditText;
-
 import com.reena.aamp.terminal.TerminalSessionClient;
 import com.termux.terminal.TerminalEmulator;
 import com.termux.terminal.TerminalSession;
@@ -18,8 +15,6 @@ public class TerminalActivity extends Activity {
 
     private TerminalView terminalView;
     private TerminalSession terminalSession;
-    private EditText commandInput;
-    private Button sendButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +23,13 @@ public class TerminalActivity extends Activity {
 
         initializeViews();
         setupTerminal();
-        setupInputHandling();
     }
 
     private void initializeViews() {
         terminalView = findViewById(R.id.terminal_view);
-        commandInput = findViewById(R.id.command_input);
-        sendButton = findViewById(R.id.send_button);
     }
 
     private void setupTerminal() {
-        // Buat terminal session baru
         String[] environment = getEnvironment();
         String workingDirectory = getWorkingDirectory();
         String[] command = {"/system/bin/sh"};
@@ -61,33 +52,11 @@ public class TerminalActivity extends Activity {
         terminalView.setTextSize(30);
     }
 
-    private void setupInputHandling() {
-        sendButton.setOnClickListener(v -> sendCommand());
-
-        commandInput.setOnKeyListener((v, keyCode, event) -> {
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                sendCommand();
-                return true;
-            }
-            return false;
-        });
-    }
-
-    private void sendCommand() {
-        String command = commandInput.getText().toString();
-        if (!command.isEmpty()) {
-            // Kirim command ke terminal session
-            terminalSession.write(command + "\r");
-            commandInput.setText("");
-        }
-    }
-
     private void onScreenChanged() {
         terminalView.onScreenUpdated();
     }
 
     private String[] getEnvironment() {
-        // Setup environment variables
         return new String[]{
                 "TERM=xterm-256color",
                 "HOME=" + getFilesDir().getAbsolutePath(),
@@ -97,7 +66,7 @@ public class TerminalActivity extends Activity {
     }
 
     private String getWorkingDirectory() {
-        File workDir = new File(getFilesDir(), "terminal");
+        File workDir = new File(getFilesDir(), "home");
         if (!workDir.exists()) {
             workDir.mkdirs();
         }
